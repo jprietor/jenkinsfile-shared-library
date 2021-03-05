@@ -8,8 +8,8 @@ def call(env){
         }
 
         stages {
-            agent none
             stage('Checkout') {
+                agent none
                 steps {
                     script {
                         // Get code from GitHub repository
