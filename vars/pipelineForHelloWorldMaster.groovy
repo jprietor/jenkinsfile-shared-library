@@ -1,5 +1,5 @@
 def call(env){
-    pipeline(env) {
+    pipeline {
         stages {
             stage('First Test') {
                 script {
