@@ -3,8 +3,11 @@ def call(env){
         agent none
         stages {
             stage('First Test') {
-                script {
-                    println "hello world"
+                agent none
+                steps {
+                    script {
+                        println "hello world"
+                    }
                 }
             }
         }
