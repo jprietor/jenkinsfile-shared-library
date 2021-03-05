@@ -8,6 +8,7 @@ def call(env){
         }
 
         stages {
+            agent none
             stage('Checkout') {
                 steps {
                     script {
@@ -17,6 +18,7 @@ def call(env){
                 }
             }
             stage('Compile') {
+                agent none
                 steps {
                     script {
                         // Run Maven skipping tests
@@ -31,6 +33,7 @@ def call(env){
                 }
             }
             stage('Test') {
+                agent none
                 steps {
                     script {
                         sh "mvn test"
@@ -38,6 +41,7 @@ def call(env){
                 }
             }
             stage('Build') {
+                agent none
                 steps {
                     script {
                         println "Docker build..."
@@ -45,6 +49,7 @@ def call(env){
                 }
             }
             stage('Deliver') {
+                agent none
                 steps {
                     script {
                         println "Docker push..."
@@ -52,6 +57,7 @@ def call(env){
                 }
             }
             stage('Deploy') {
+                agent none
                 steps {
                     script {
                         println "Kubernetes deployment..."
