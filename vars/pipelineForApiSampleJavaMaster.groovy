@@ -24,11 +24,11 @@ def call(env){
                         // Run Maven skipping tests
                         sh "mvn clean package -DskipTests"
                     }
+                }
 
-                    post {
-                        success {
-                            archiveArtifacts 'target/*.jar'
-                        }
+                post {
+                    success {
+                        archiveArtifacts 'target/*.jar'
                     }
                 }
             }
