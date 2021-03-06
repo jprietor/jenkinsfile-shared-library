@@ -57,10 +57,38 @@ def call(env){
                 }
             }
             stage('Deploy') {
-                agent { label 'main' }
+                agent { 
+                    docker { 
+                        label 'docker'
+                        image 'bitnami/kubectl' 
+                        args '--entrypoint=""'
+                    }
+                }
                 steps {
                     script {
-                        println "Kubernetes deployment..."
+                        def newDeployment = readYaml file: 'manifests/deployment.yaml'
+                        def oldDeployment
+
+                        withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
+                            def deployments = sh( 
+                                script: "kubectl --kubeconfig ${kubeconfig} get deployments --no-headers -l app=api-sample-java | wc -l",
+                                returnStdout: true
+                            )
+
+                            if (deployments.toInteger() == 1) {
+                                // Delete previous deployment and deploy new version...
+                                println "TODO: redeployment"
+
+                            }else if (deployments.toInteger() == 0) {
+                                // Deploy new service
+                                sh(
+                                    script: "kubectl --kubeconfig ${kubeconfig} create -f manifests/deployment.yaml"
+                                )
+                                sh(
+                                    script: "kubectl --kubeconfig ${kubeconfig} create -f manifests/service.yaml"
+                                )
+                            }
+                        }
                     }
                 }
             }
