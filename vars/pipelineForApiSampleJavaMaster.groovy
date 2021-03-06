@@ -41,18 +41,18 @@ def call(env){
                 }
             }
             stage('Build') {
-                agent { label 'main' }
+                agent { label 'docker' }
                 steps {
                     script {
-                        println "Docker build..."
+                        sh "docker build ${env.DOCKERFILE_LOCATION} -t ${env.DOCKER_IMAGE}:${env.VERSION}"
                     }
                 }
             }
             stage('Deliver') {
-                agent { label 'main' }
+                agent { label 'docker' }
                 steps {
                     script {
-                        println "Docker push..."
+                        sh "docker push ${env.DOCKER_IMAGE}:${env.VERSION}"
                     }
                 }
             }
