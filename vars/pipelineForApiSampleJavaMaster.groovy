@@ -118,7 +118,7 @@ def call(env){
                     }
                 }
             }
-            stage('Do Blue/Green') {
+            stage('Blue/Green switch') {
                 agent {
                     docker { 
                         label 'docker'
@@ -128,7 +128,7 @@ def call(env){
                 }
                 steps {
                     script {
-                        input message: 'Do you want to switch environment?', ok: 'Switch!'
+                        input message: 'Do you want to switch Blue/Green?', ok: 'Switch!'
                         def patch = readYaml file: 'manifests/service-patch.yaml'
                         def deployVersion
                         def actualVersion
