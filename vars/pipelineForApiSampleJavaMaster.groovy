@@ -5,7 +5,7 @@ def deployApp(newDeployment, kubeconfig) {
     newDeployment.spec.template.metadata.labels.version = "${env.VERSION}"
     newDeployment.spec.template.spec.containers[0].image = "${env.DOCKER_IMAGE}:${env.VERSION}"
 
-    sh "rm deployment.yaml"
+    sh "rm deployment.yaml || true"
     writeYaml file: "deployment.yaml", data: newDeployment
 
     sh "kubectl --kubeconfig ${kubeconfig} apply -f deployment.yaml"
@@ -145,7 +145,7 @@ def call(env){
 
                         patch.spec.selector.version = deployVersion
 
-                        sh "rm patch.yaml"
+                        sh "rm patch.yaml || true"
                         writeYaml file: 'patch.yaml', data: patch
 
                         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
